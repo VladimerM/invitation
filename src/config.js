@@ -2,13 +2,13 @@
 // Файлы (фото, музыку) кладите в папку /public и указывайте путь без «/» в начале.
 
 export const config = {
-  groom: 'Sevak',
-  bride: 'Diana',
+  groom: 'Севак',
+  bride: 'Диана',
   monogram: 'S·D',
 
   // Дата и время торжества (для обратного отсчёта и файла календаря)
-  date: '2027-06-19T17:00:00',
-  dateLabel: '19 июня 2027',
+  date: '2026-12-14T17:00:00',
+  dateLabel: '14 декабря 2026',
   timeLabel: '17:00',
   // Продолжительность события в календаре, в часах
   durationHours: 6,
@@ -50,7 +50,7 @@ export const config = {
     { time: '12:30', title: 'Выезд от невесты', text: 'Отправляемся на церемонию', icon: 'car' },
     { time: '13:30', title: 'Фотосессия в церкви', text: 'Фотосессия молодожёнов и гостей', icon: 'camera' },
     { time: '15:00', title: 'Венчание', text: 'Церемония венчания', icon: 'church' },
-    { time: '15:30', title: 'Выезд в банкетный зал', text: 'Отправляемся в ресторан', icon: 'car', map: 'https://yandex.ru/maps/?text=Симфония+Холл' },
+    { time: '15:30', title: 'Выезд в банкетный зал', text: 'Отправляемся в ресторан', icon: 'car', map: 'https://maps.app.goo.gl/pUe67pMyXD4DyR246' },
     { time: '17:00', title: 'Сбор гостей', text: 'Встречаем гостей в ресторане', icon: 'glasses' },
   ],
 
@@ -58,9 +58,9 @@ export const config = {
     {
       time: '17:00',
       title: 'Церемония и банкет',
-      address: 'Симфония Холл',
+      address: 'Колизей',
       image: 'photos/venue.jpg',
-      map: 'https://yandex.ru/maps/?text=Симфония+Холл',
+      map: 'https://maps.app.goo.gl/pUe67pMyXD4DyR246',
     },
   ],
 
@@ -68,15 +68,16 @@ export const config = {
   // инструкция по настройке в файле google-apps-script/Code.gs
   rsvp: {
     enabled: true,
-    deadline: 'Пожалуйста, дайте ответ до 15 июня 2027',
+    deadline: 'Пожалуйста, дайте ответ до 5 декабря 2026',
     // Ссылка веб-приложения Apps Script (https://script.google.com/macros/s/.../exec)
     endpoint: 'https://script.google.com/macros/s/AKfycbxQxiEe3UwoEyKNEgOH_GZy8Rs-RmSJOSBce75QiSvtbvYbVnFmosV6LCd_8BRTi_Gj/exec',
     maxGuests: 10,
   },
 
   contact: {
-    text: 'По всем вопросам можно обращаться к организатору свадьбы',
-    name: 'Тамара',
-    phone: '+7 (900) 000-00-00',
+    text: 'По всем вопросам обращайтесь к нам.',
+    name: 'Sevak и Diana',
+    phone: '+995 577 757 090',
   },
+
 }
