@@ -52,7 +52,7 @@ export const config = {
     ],
   },
 
-  photos: ['photos/1.jpg', 'photos/2.jpg', 'photos/3.jpg', 'photos/4.jpg', 'photos/5.jpg'],
+ photos: ['photos/1.jpg', 'photos/2.jpg', 'photos/3.jpg', 'photos/4.jpg', 'photos/5.jpg', 'photos/6.jpg', 'photos/7.jpg'],
 
   // icon: camera | home | heart | car | church | glasses
   schedule: [
