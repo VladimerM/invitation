@@ -49,12 +49,12 @@ export function initScrollAnimations(scope) {
       })
     }
 
-    // Gallery: photos open from a clipped frame, flourishes swirl in
-    const gallery = scope.querySelector('#gallery-grid')
+    // Gallery: the carousel rises in as a whole (slides keep their own CSS transitions), flourishes swirl in
+    const gallery = scope.querySelector('#gallery-carousel')
     if (gallery) {
-      gsap.from(gallery.children, {
-        clipPath: 'inset(12% 8%)', y: 30, autoAlpha: 0, duration: 1.1, stagger: 0.1,
-        ease: 'power3.out', clearProps: 'clipPath', scrollTrigger: once(gallery, 'top 85%'),
+      gsap.from(gallery, {
+        y: 40, autoAlpha: 0, scale: 0.96, filter: 'blur(6px)', duration: 1.1,
+        ease: 'power3.out', clearProps: 'filter,transform', scrollTrigger: once(gallery, 'top 85%'),
       })
     }
     $$('.gallery-flourish').forEach((el, i) => {
