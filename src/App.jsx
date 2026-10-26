@@ -15,11 +15,14 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 import MusicButton from './components/MusicButton'
 
+// Missing keys count as shown, so older configs keep working
+const show = (name) => config.sections?.[name] !== false
+
 export default function App() {
   const page = useRef(null)
   const hero = useRef(null)
   const audio = useRef(null)
-  const [opened, setOpened] = useState(false)
+  const [opened, setOpened] = useState(!show('intro'))
   const [playing, setPlaying] = useState(false)
   const [hasMusic, setHasMusic] = useState(Boolean(config.music))
 
@@ -27,7 +30,8 @@ export default function App() {
     document.title = `${config.groom} и ${config.bride} — приглашение на свадьбу`
     const root = document.documentElement
     Object.entries(config.theme).forEach(([k, v]) => root.style.setProperty(`--${k}`, v))
-    root.classList.add('intro-lock')
+    if (show('intro')) root.classList.add('intro-lock')
+    else hero.current?.play()
     return initScrollAnimations(page.current)
   }, [])
 
@@ -40,31 +44,33 @@ export default function App() {
 
   return (
     <>
-      <Intro
-        onOpen={() => { setOpened(true); if (hasMusic) play() }}
-        onUnlock={() => {
-          document.documentElement.classList.remove('intro-lock')
-          ScrollTrigger.refresh()
-        }}
-        onRevealHero={() => hero.current?.play()}
-      />
+      {show('intro') && (
+        <Intro
+          onOpen={() => { setOpened(true); if (hasMusic) play() }}
+          onUnlock={() => {
+            document.documentElement.classList.remove('intro-lock')
+            ScrollTrigger.refresh()
+          }}
+          onRevealHero={() => hero.current?.play()}
+        />
+      )}
 
-      <Petals active={opened} />
+      {show('petals') && <Petals active={opened} />}
       <div className="grain" aria-hidden="true" />
       <div className="vignette" aria-hidden="true" />
 
       <div ref={page}>
-        <Hero ref={hero} />
+        {show('hero') && <Hero ref={hero} />}
         <main>
-          <Invitation />
-          <Countdown />
-          <Gallery />
-          <Timeline />
-          <Locations />
-          <Rsvp />
-          <Contact />
+          {show('invitation') && <Invitation />}
+          {show('countdown') && <Countdown />}
+          {show('gallery') && <Gallery />}
+          {show('timeline') && <Timeline />}
+          {show('locations') && <Locations />}
+          {show('rsvp') && <Rsvp />}
+          {show('contact') && <Contact />}
         </main>
-        <Footer />
+        {show('footer') && <Footer />}
       </div>
 
       {hasMusic && (

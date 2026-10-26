@@ -13,6 +13,21 @@ export const config = {
   // Продолжительность события в календаре, в часах
   durationHours: 6,
 
+  // Какие разделы показывать: true — показать, false — скрыть
+  sections: {
+    intro: true,       // конверт с печатью при открытии сайта
+    hero: true,        // первый экран с фото и именами
+    invitation: true,  // «Дорогие родные и близкие!»
+    countdown: true,   // обратный отсчёт + «Добавить в календарь»
+    gallery: true,     // фотографии
+    timeline: true,    // план дня
+    locations: true,   // как добраться
+    rsvp: true,        // анкета гостя
+    contact: true,     // контакты организатора
+    footer: true,      // «С любовью, …» внизу
+    petals: true,      // падающие лепестки
+  },
+
   // Цвета темы (как в оригинале)
   theme: {
     bg: '#faf8f3',
@@ -67,7 +82,6 @@ export const config = {
   // Анкета гостя. Ответы сохраняются в Google Таблицу —
   // инструкция по настройке в файле google-apps-script/Code.gs
   rsvp: {
-    enabled: true,
     deadline: 'Пожалуйста, дайте ответ до 15 июня 2027',
     // Ссылка веб-приложения Apps Script (https://script.google.com/macros/s/.../exec)
     endpoint: 'https://script.google.com/macros/s/AKfycbxQxiEe3UwoEyKNEgOH_GZy8Rs-RmSJOSBce75QiSvtbvYbVnFmosV6LCd_8BRTi_Gj/exec',
