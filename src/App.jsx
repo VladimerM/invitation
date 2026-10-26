@@ -10,6 +10,7 @@ import Countdown from './components/Countdown'
 import Gallery from './components/Gallery'
 import Timeline from './components/Timeline'
 import Locations from './components/Locations'
+import Rsvp from './components/Rsvp'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import MusicButton from './components/MusicButton'
@@ -60,6 +61,7 @@ export default function App() {
           <Gallery />
           <Timeline />
           <Locations />
+          <Rsvp />
           <Contact />
         </main>
         <Footer />

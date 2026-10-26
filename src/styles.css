@@ -1135,3 +1135,180 @@ button{ font-family:inherit; }
 }
 
 .hero--art .hero-floral path{ fill:none; }
+
+/* ============================================================
+   RSVP
+   ============================================================ */
+
+.rsvp-deadline{
+  margin:-1.6em 0 2.6em;
+  text-align:center;
+  font-style:italic;
+  color:var(--ink-60);
+}
+
+.rsvp-card{
+  background:var(--paper-card);
+  border:1px solid var(--accent-30);
+  border-radius:16px;
+  padding:clamp(24px, 5vw, 44px);
+  box-shadow:0 30px 60px -38px color-mix(in srgb, var(--ink) 50%, transparent);
+}
+
+.rsvp-form{
+  display:flex;
+  flex-direction:column;
+  gap:1.5em;
+}
+
+.field{ margin:0; padding:0; border:none; display:block; }
+.field-label{
+  display:block;
+  margin-bottom:.6em;
+  font-size:.72rem;
+  font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--accent-dark);
+}
+.field-radios .field-label{ padding:0; }
+
+.field-input{
+  width:100%;
+  padding:.85em 1.1em;
+  font-family:inherit;
+  font-size:1.02rem;
+  color:var(--ink);
+  background:color-mix(in srgb, var(--bg) 25%, #fff);
+  border:1px solid var(--accent-30);
+  border-radius:10px;
+  transition:border-color .25s ease, box-shadow .25s ease;
+}
+.field-input:focus{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-15);
+}
+.field-input::placeholder{ color:var(--ink-60); opacity:.7; font-style:italic; }
+textarea.field-input{ resize:vertical; min-height:80px; }
+
+.radio{
+  display:flex;
+  align-items:center;
+  gap:.7em;
+  padding:.3em 0;
+  cursor:pointer;
+  position:relative;
+}
+.radio input{
+  position:absolute;
+  opacity:0;
+  width:1px; height:1px;
+}
+.radio i{
+  flex:none;
+  width:21px;
+  height:21px;
+  border-radius:50%;
+  border:1.5px solid var(--accent);
+  position:relative;
+  transition:box-shadow .25s ease;
+}
+.radio i::after{
+  content:'';
+  position:absolute;
+  inset:4px;
+  border-radius:50%;
+  background:var(--accent);
+  transform:scale(0);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.radio input:checked + i::after{ transform:scale(1); }
+.radio input:focus-visible + i{ outline:2px solid var(--accent); outline-offset:3px; }
+
+.stepper{
+  display:flex;
+  align-items:center;
+  gap:.8em;
+}
+.stepper-btn{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:1px solid var(--accent);
+  background:transparent;
+  color:var(--accent-dark);
+  font-size:1.3rem;
+  line-height:1;
+  cursor:pointer;
+  transition:background-color .25s ease, color .25s ease;
+}
+.stepper-btn:hover{ background:var(--accent); color:#fff; }
+.stepper-value{
+  width:72px;
+  text-align:center;
+  padding:.6em 0;
+  font-family:inherit;
+  font-size:1.25rem;
+  font-weight:500;
+  color:var(--ink);
+  background:color-mix(in srgb, var(--bg) 25%, #fff);
+  border:1px solid var(--accent-30);
+  border-radius:10px;
+  -moz-appearance:textfield;
+  appearance:textfield;
+}
+.stepper-value::-webkit-outer-spin-button,
+.stepper-value::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+
+.rsvp-error{
+  margin:0;
+  color:#a33;
+  font-style:italic;
+}
+
+.rsvp-submit{
+  align-self:center;
+  min-width:min(100%, 280px);
+  justify-content:center;
+  position:relative;
+}
+.btn-spinner{
+  display:none;
+  width:16px;
+  height:16px;
+  border:2px solid rgba(255,255,255,.35);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+.rsvp-submit.is-loading .btn-spinner{ display:inline-block; }
+.rsvp-submit.is-loading .btn-label{ opacity:.6; }
+.rsvp-submit:disabled{ cursor:default; }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+
+.rsvp-success{
+  text-align:center;
+  padding:1.4em 0;
+}
+.rsvp-check{
+  width:88px;
+  height:88px;
+  margin-inline:auto;
+  display:block;
+  stroke:var(--accent);
+  stroke-width:2.4;
+}
+.rsvp-success-text{
+  margin:1.2em 0 0;
+  font-size:clamp(1.15rem, 3vw, 1.4rem);
+  font-style:italic;
+}
+
+/* Анимация галочки после отправки */
+.rsvp-check circle,
+.rsvp-check path{ stroke-dasharray:1; stroke-dashoffset:1; animation:rsvp-draw .9s ease forwards; }
+.rsvp-check path{ animation-delay:.55s; }
+@keyframes rsvp-draw{ to{ stroke-dashoffset:0; } }
+
+.field-collapse{ transition:opacity .3s ease; }

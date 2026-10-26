@@ -64,6 +64,16 @@ export const config = {
     },
   ],
 
+  // Анкета гостя. Ответы сохраняются в Google Таблицу —
+  // инструкция по настройке в файле google-apps-script/Code.gs
+  rsvp: {
+    enabled: true,
+    deadline: 'Пожалуйста, дайте ответ до 15 июня 2027',
+    // Ссылка веб-приложения Apps Script (https://script.google.com/macros/s/.../exec)
+    endpoint: 'https://script.google.com/macros/s/AKfycbxQxiEe3UwoEyKNEgOH_GZy8Rs-RmSJOSBce75QiSvtbvYbVnFmosV6LCd_8BRTi_Gj/exec',
+    maxGuests: 10,
+  },
+
   contact: {
     text: 'По всем вопросам можно обращаться к организатору свадьбы',
     name: 'Тамара',
