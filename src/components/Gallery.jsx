@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { config } from '../config'
 import SectionHead from './SectionHead'
 import { ChevronLeft, ChevronRight, Close } from './icons'
@@ -41,7 +42,7 @@ function Lightbox({ photos, index, setIndex, onClose }) {
     }
   })
 
-  return (
+  return createPortal(
     <div
       className="lightbox"
       role="dialog"
@@ -62,7 +63,7 @@ function Lightbox({ photos, index, setIndex, onClose }) {
       <button className="lb-btn lb-next" type="button" aria-label="Следующее фото" onClick={next}><ChevronRight /></button>
       <p className="lb-counter">{index + 1} / {n}</p>
     </div>
-  )
+  , document.body)
 }
 
 export default function Gallery() {

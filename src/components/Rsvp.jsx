@@ -17,8 +17,6 @@ export default function Rsvp() {
     try { return localStorage.getItem(SENT_KEY) } catch { return null }
   })
 
-  if (!rsvp?.enabled) return null
-
   const coming = attend === 'yes'
   const clampGuests = (n) => Math.min(rsvp.maxGuests, Math.max(1, Number(n) || 1))
 
