@@ -7,8 +7,8 @@ export const config = {
   monogram: 'S·D',
 
   // Дата и время торжества (для обратного отсчёта и файла календаря)
-  date: '2026-12-14T17:00:00',
-  dateLabel: '14 декабря 2026',
+  date: '2026-12-22T17:00:00',
+  dateLabel: '22 декабря 2026',
   timeLabel: '17:00',
   // Продолжительность события в календаре, в часах
   durationHours: 6,
@@ -74,7 +74,7 @@ export const config = {
     { time: '12:30', title: 'Выезд от невесты', text: 'Отправляемся на церемонию', icon: 'car' },
     { time: '13:30', title: 'Фотосессия в церкви', text: 'Фотосессия молодожёнов и гостей', icon: 'camera' },
     { time: '15:00', title: 'Венчание', text: 'Церемония венчания', icon: 'church' },
-    { time: '15:30', title: 'Выезд в банкетный зал', text: 'Отправляемся в ресторан', icon: 'car', map: 'https://maps.app.goo.gl/pUe67pMyXD4DyR246' },
+    { time: '15:30', title: 'Выезд в банкетный зал', text: 'Отправляемся в ресторан', icon: 'car', map: 'https://share.google/yDzfpSD9ZAqNNyweb' },
     { time: '17:00', title: 'Сбор гостей', text: 'Встречаем гостей в ресторане', icon: 'glasses' },
   ],
 
@@ -82,9 +82,9 @@ export const config = {
     {
       time: '17:00',
       title: 'Церемония и банкет',
-      address: 'Колизей',
+      address: 'Royal Events ',
       image: 'photos/venue.jpg',
-      map: 'https://maps.app.goo.gl/pUe67pMyXD4DyR246',
+      map: 'https://share.google/yDzfpSD9ZAqNNyweb',
     },
   ],
 
