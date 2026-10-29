@@ -1,9 +1,10 @@
 /* ============================================================
-   Свадебное приглашение — «бумага и золото»
-   Цвета темы приходят CSS-переменными из index.php (:root)
+   Свадебное приглашение — «лебеди, розы и слоновая кость»
+   Цвета темы приходят CSS-переменными из config.js (:root)
    ============================================================ */
 
 :root{
+  --vh:100vh;
   --font-serif: 'Cormorant', 'Noto Serif Armenian', Georgia, serif;
   --font-script: 'Great Vibes', cursive;
   --accent-15: color-mix(in srgb, var(--accent) 15%, transparent);
@@ -13,6 +14,10 @@
   --card-lo: color-mix(in srgb, var(--bg) 85%, #fff);
   --paper-card: color-mix(in srgb, var(--bg) 35%, #fff);
   --ink-60: color-mix(in srgb, var(--ink) 62%, transparent);
+}
+/* Высота без прыжков адресной строки на телефонах */
+@supports (height: 100svh){
+  :root{ --vh:100svh; }
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -63,53 +68,26 @@ button{ font-family:inherit; }
   letter-spacing:.4em;
   text-indent:.4em; /* компенсация трекинга при center */
   text-transform:uppercase;
-  color:var(--accent);
+  color:var(--sage);
 }
 
 .section-title{
   margin:0;
-  font-size:clamp(1.8rem, 5.5vw, 2.7rem);
+  font-size:clamp(2rem, 6vw, 3rem);
+  font-style:italic;
   font-weight:500;
   line-height:1.2;
   letter-spacing:.01em;
 }
 
+/* Веточка с бутоном под заголовком */
 .gold-line{
   display:block;
-  width:110px;
-  height:1px;
-  margin:1.4em auto 0;
-  background:linear-gradient(90deg, transparent, var(--accent), transparent);
-  position:relative;
-}
-.gold-line::after{
-  content:'';
-  position:absolute;
-  left:50%; top:50%;
-  width:5px; height:5px;
-  background:var(--accent);
-  transform:translate(-50%,-50%) rotate(45deg);
-}
-/* Блик, медленно скользящий по золотой линии — «тиснение фольгой» */
-.gold-line::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(90deg,
-    transparent 0%,
-    color-mix(in srgb, #fff 85%, var(--accent)) 50%,
-    transparent 100%);
-  opacity:0;
-  animation:foil-sweep 6s ease-in-out infinite;
-}
-@keyframes foil-sweep{
-  0%, 62%   { opacity:0; transform:translateX(-60%); }
-  72%       { opacity:.9; }
-  88%, 100% { opacity:0; transform:translateX(60%); }
-}
-
-@media (prefers-reduced-motion: reduce){
-  .gold-line::before{ animation:none; }
+  width:150px;
+  height:23px;
+  margin:1.1em auto 0;
+  color:var(--sage);
+  overflow:visible;
 }
 
 /* ---------- кнопки ---------- */
@@ -144,152 +122,124 @@ button{ font-family:inherit; }
 }
 
 /* ============================================================
-   ИНТРО-КОНВЕРТ
+   ИНТРО — видео-конверт
+   Сцена всегда в пропорциях видео и во всю высоту экрана:
+   на телефоне она шире экрана (края обрезаются),
+   на компьютере уже — по бокам размытый первый кадр.
    ============================================================ */
 
 .intro{
   position:fixed;
   inset:0;
   z-index:100;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:34px;
-  padding:24px;
-  background:
-    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--soft) 65%, var(--bg)), transparent 60%),
-    radial-gradient(100% 70% at 50% 105%, var(--accent-15), transparent 55%),
-    var(--bg);
+  overflow:hidden;
+  background:#e8e1d4;
 }
 
-.envelope{ perspective:1200px; }
-
-.env-body{
-  position:relative;
-  width:min(86vw, 350px);
-  aspect-ratio:34/22;
-  transform-style:preserve-3d;
+.intro-backdrop{
+  position:absolute;
+  inset:-40px;
+  width:calc(100% + 80px);
+  max-width:none;
+  height:calc(100% + 80px);
+  object-fit:cover;
+  filter:blur(28px) saturate(.9);
+  opacity:.85;
 }
-/* задник конверта */
-.env-body::before{
+
+.intro-stage{
+  position:absolute;
+  top:0;
+  left:50%;
+  height:var(--vh);
+  width:calc(var(--vh) * 576 / 704);
+  margin-left:calc(var(--vh) * -288 / 704);
+  transform-origin:50% 32%;
+}
+@media (min-aspect-ratio: 576/704){
+  .intro-stage{
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+    mask-image:linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  }
+}
+
+.intro-video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* Мягкая пульсация вокруг печати — подсказка, куда нажать */
+.intro-ring{
+  position:absolute;
+  left:50%;
+  top:46%;
+  width:31%;
+  aspect-ratio:1;
+  border-radius:50%;
+  transform:translate(-50%, -50%);
+  pointer-events:none;
+}
+.intro-ring::before,
+.intro-ring::after{
   content:'';
   position:absolute;
   inset:0;
-  border-radius:7px;
-  background:linear-gradient(180deg, color-mix(in srgb, var(--soft) 80%, #fff), var(--soft));
-  box-shadow:0 34px 60px -22px color-mix(in srgb, var(--ink) 45%, transparent);
+  border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.85);
+  box-shadow:0 0 18px rgba(255,255,255,.55);
+  animation:seal-ripple 2.6s cubic-bezier(.2,.6,.3,1) infinite;
+}
+.intro-ring::after{ animation-delay:1.3s; }
+@keyframes seal-ripple{
+  0%  { transform:scale(.92); opacity:0; }
+  20% { opacity:.9; }
+  100%{ transform:scale(1.45); opacity:0; }
 }
 
-.env-letter{
-  position:absolute;
-  left:5%; right:5%; top:4%; bottom:7%;
-  z-index:1;
-  border-radius:4px;
-  background:color-mix(in srgb, var(--bg) 30%, #fff);
-  border:1px solid var(--accent-30);
-  box-shadow:inset 0 0 0 4px color-mix(in srgb, var(--bg) 30%, #fff), inset 0 0 0 5px var(--accent-15);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:.35em;
-  text-align:center;
-  padding:1em;
-}
-.letter-monogram{
-  font-size:1.35rem;
-  font-weight:500;
-  letter-spacing:.22em;
-  text-indent:.22em;
-  color:var(--accent);
-}
-.letter-names{ font-size:1.02rem; font-style:italic; }
-.letter-date{ font-size:.72rem; letter-spacing:.28em; text-indent:.28em; text-transform:uppercase; color:var(--ink-60); }
-
-/* передний карман конверта */
-.env-pocket{
+.intro-tap{
   position:absolute;
   inset:0;
   z-index:2;
-  border-radius:7px;
-  clip-path:polygon(0 0, 50% 48%, 100% 0, 100% 100%, 0 100%);
-  background:linear-gradient(180deg, color-mix(in srgb, var(--soft) 55%, #fff) 30%, var(--soft));
-  filter:drop-shadow(0 -1px 1px color-mix(in srgb, var(--ink) 18%, transparent));
-}
-
-/* треугольный клапан */
-.env-flap{
-  position:absolute;
-  left:0; right:0; top:0;
-  height:57%;
-  z-index:3;
-  clip-path:polygon(0 0, 100% 0, 50% 100%);
-  background:linear-gradient(195deg, color-mix(in srgb, var(--soft) 62%, #fff), color-mix(in srgb, var(--soft) 82%, var(--accent)));
-  transform-origin:top center;
-  backface-visibility:hidden;
-  filter:drop-shadow(0 2px 2px color-mix(in srgb, var(--ink) 22%, transparent));
-}
-
-/* сургучная печать */
-.env-seal{
-  position:absolute;
-  left:50%; top:47%;
-  z-index:4;
-  width:clamp(66px, 21vw, 80px);
-  height:clamp(66px, 21vw, 80px);
+  width:100%;
   margin:0;
   padding:0;
-  transform:translate(-50%,-50%);
   border:none;
-  border-radius:47% 53% 51% 49% / 52% 48% 52% 48%;
-  background:radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--accent) 55%, #fff), var(--accent) 48%, var(--accent-dark) 92%);
-  box-shadow:
-    inset 0 2px 4px color-mix(in srgb, #fff 45%, transparent),
-    inset 0 -4px 7px color-mix(in srgb, var(--ink) 40%, transparent),
-    0 6px 16px -4px color-mix(in srgb, var(--ink) 50%, transparent);
-  color:#fff;
+  background:transparent;
   cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:scale .3s ease;
+  -webkit-tap-highlight-color:transparent;
 }
-.env-seal:hover{ scale:1.06; }
-.seal-ring{
-  position:absolute;
-  inset:7px;
-  border-radius:inherit;
-  border:1px solid color-mix(in srgb, #fff 55%, transparent);
-  opacity:.75;
-  pointer-events:none;
-}
-.seal-monogram{
-  font-size:1.15rem;
-  font-weight:500;
-  letter-spacing:.14em;
-  text-indent:.14em;
-  text-shadow:0 1px 2px color-mix(in srgb, var(--ink) 65%, transparent);
-}
+.intro-tap:focus-visible{ outline-offset:-6px; }
 
 .intro-hint{
+  position:absolute;
+  left:50%;
+  bottom:max(9vh, 48px);
+  z-index:1;
+  width:max-content;
+  max-width:88vw;
   margin:0;
-  max-width:22em;
-  font-size:clamp(.82rem, 2.4vw, .95rem);
+  transform:translateX(-50%);
+  padding:.9em 1.4em;
+  border-radius:999px;
+  background:color-mix(in srgb, #fff 55%, transparent);
+  -webkit-backdrop-filter:blur(6px);
+  backdrop-filter:blur(6px);
+  font-size:clamp(.7rem, 2.6vw, .82rem);
   font-weight:600;
-  letter-spacing:.28em;
-  text-indent:.28em;
+  letter-spacing:.26em;
+  text-indent:.26em;
   text-transform:uppercase;
   text-align:center;
-  color:var(--accent-dark);
-  text-shadow:
-    0 0 24px color-mix(in srgb, var(--accent) 35%, transparent),
-    0 1px 0 color-mix(in srgb, #fff 55%, transparent);
-  animation:hint-pulse 2.4s ease-in-out infinite;
+  line-height:1.5;
+  color:var(--ink);
+  pointer-events:none;
+  animation:hint-pulse 2.6s ease-in-out infinite;
 }
 @keyframes hint-pulse{
-  0%,100%{ opacity:.72; transform:translateY(0); }
-  50%{ opacity:1; transform:translateY(-2px); }
+  0%,100%{ opacity:.78; }
+  50%{ opacity:1; }
 }
 
 /* ---------- лепестки ---------- */
@@ -331,8 +281,8 @@ button{ font-family:inherit; }
   z-index:39;
   pointer-events:none;
   background:radial-gradient(120% 85% at 50% 45%,
-    transparent 45%,
-    color-mix(in srgb, var(--ink) 7%, transparent) 100%);
+    transparent 55%,
+    color-mix(in srgb, var(--ink) 4%, transparent) 100%);
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -340,153 +290,126 @@ button{ font-family:inherit; }
 }
 
 /* ============================================================
-   HERO
+   HERO — видео-рамка из роз и лебедей
    ============================================================ */
 
 .hero{
   position:relative;
-  min-height:100svh;
+  height:var(--vh);
+  min-height:520px;
+  overflow:hidden;
+  background:var(--bg);
+}
+
+/* Сцена в пропорциях видео (576×1072), во всю высоту */
+.hero-stage{
+  position:absolute;
+  top:0;
+  left:50%;
+  height:100%;
+  aspect-ratio:576/1072;
+  transform:translateX(-50%);
+  container-type:inline-size;
+}
+/* На широких экранах края видео растворяются в цвете бумаги */
+@media (min-aspect-ratio: 576/1072){
+  .hero-video{
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image:linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+}
+
+.hero-video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* Текст — внутри арки из цветов, над лебедями */
+.hero-inner{
+  position:absolute;
+  inset:13% 15% 21%;
+  z-index:1;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
-  overflow:hidden;
 }
-
-.hero-bg{ position:absolute; inset:0; }
-.hero-bg img{
-  width:100%; height:100%;
-  object-fit:cover;
-  animation:kenburns 24s ease-in-out infinite alternate;
-}
-@keyframes kenburns{
-  from{ transform:scale(1); }
-  to{ transform:scale(1.08); }
-}
-.hero-veil{
-  position:absolute; inset:0;
-  background:linear-gradient(180deg, rgba(22,17,12,.34), rgba(22,17,12,.48) 70%, rgba(22,17,12,.62));
-}
-
-.hero--art{
-  background:
-    radial-gradient(110% 75% at 50% 0%, color-mix(in srgb, var(--soft) 70%, var(--bg)), transparent 62%),
-    radial-gradient(90% 60% at 15% 100%, var(--accent-15), transparent 55%),
-    radial-gradient(90% 60% at 85% 100%, color-mix(in srgb, var(--petal) 35%, transparent), transparent 55%),
-    var(--bg);
-}
-.hero-art{
-  position:absolute; inset:0;
-  display:flex; align-items:flex-end; justify-content:center;
-  pointer-events:none;
-}
-.hero-floral{
-  width:min(74vw, 430px);
-  margin-bottom:6vh;
-  stroke:var(--accent);
-  stroke-width:1.3;
-  opacity:.5;
-}
-
-.hero-inner{ position:relative; z-index:2; padding:24px; }
-.hero--photo .hero-inner{ color:#fff; text-shadow:0 2px 22px rgba(0,0,0,.45); }
 
 .hero-kicker{
-  margin:0 0 2.2em;
-  font-size:.78rem;
+  margin:0 0 1.1em;
+  font-size:clamp(.66rem, 2.6cqi, .8rem);
   font-weight:600;
   letter-spacing:.42em;
   text-indent:.42em;
   text-transform:uppercase;
-  color:var(--accent);
+  color:var(--ink-60);
 }
-.hero--photo .hero-kicker{ color:color-mix(in srgb, var(--accent) 55%, #fff); }
 
 .hero-names{
   margin:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:.05em;
+  font-size:2.6rem;
+  font-size:clamp(2rem, 10.5cqi, 3.6rem);
+  font-style:italic;
   font-weight:500;
-  font-size:clamp(2.9rem, 12vw, 6.4rem);
-  line-height:1.08;
-  letter-spacing:.02em;
+  line-height:1.1;
+  letter-spacing:.01em;
+  color:var(--ink);
 }
-.hero-name{ display:block; }
-.hero-name .char{ display:inline-block; white-space:pre; }
-
 .hero-amp{
-  font-family:var(--font-script);
-  font-size:.62em;
-  line-height:1;
+  font-weight:400;
   color:var(--accent);
-  margin-block:.03em;
-  /* золото с переливом, а не плоская заливка */
-  background:linear-gradient(100deg,
-    color-mix(in srgb, var(--accent) 70%, #6b4f22) 0%,
-    color-mix(in srgb, var(--accent) 40%, #fff6df) 42%,
-    var(--accent) 58%,
-    color-mix(in srgb, var(--accent) 70%, #6b4f22) 100%);
-  background-size:220% 100%;
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  animation:amp-shine 7s ease-in-out infinite;
-}
-@supports not (background-clip: text){
-  .hero-amp{ color:var(--accent); background:none; }
-}
-@keyframes amp-shine{
-  0%, 100%{ background-position:0% 50%; }
-  50%     { background-position:100% 50%; }
-}
-
-@media (prefers-reduced-motion: reduce){
-  .hero-amp{ animation:none; }
-}
-/* На фото золото должно быть светлее, иначе теряется в тёмной вуали */
-.hero--photo .hero-amp{
-  background:linear-gradient(100deg,
-    color-mix(in srgb, var(--accent) 55%, #fff) 0%,
-    #fff8ec 45%,
-    color-mix(in srgb, var(--accent) 40%, #fff) 60%,
-    color-mix(in srgb, var(--accent) 55%, #fff) 100%);
-  background-size:220% 100%;
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-}
-@supports not (background-clip: text){
-  .hero--photo .hero-amp{ color:color-mix(in srgb, var(--accent) 45%, #fff); background:none; }
 }
 
 .hero-date{
-  margin:2.6em 0 0;
-  font-family:'Cormorant', 'Noto Serif Armenian', Georgia, serif;
-  font-size:clamp(1.15rem, 3.4vw, 1.55rem);
-  font-weight:500;
-  letter-spacing:.08em;
-  text-indent:.08em;
-  color:inherit;
-  opacity:.92;
+  margin:.9em 0 0;
+  font-size:clamp(.72rem, 2.9cqi, .9rem);
+  font-weight:600;
+  letter-spacing:.32em;
+  text-indent:.32em;
+  text-transform:uppercase;
+  color:var(--ink-60);
+}
+
+.hero-cal{
+  margin-top:clamp(1.8em, 8cqi, 3em);
+  padding:.95em 1.7em;
+  border-radius:999px;
+  border:1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  background:color-mix(in srgb, #fff 58%, transparent);
+  -webkit-backdrop-filter:blur(4px);
+  backdrop-filter:blur(4px);
+  box-shadow:0 8px 22px -14px color-mix(in srgb, var(--ink) 60%, transparent);
+  font-size:clamp(.6rem, 2.3cqi, .72rem);
+  font-weight:600;
+  letter-spacing:.24em;
+  text-indent:.24em;
+  text-transform:uppercase;
+  line-height:1;
+  color:var(--ink-60);
+  transition:background-color .3s ease, color .3s ease, translate .3s ease;
+}
+.hero-cal:hover{
+  background:color-mix(in srgb, #fff 85%, transparent);
+  color:var(--ink);
+  translate:0 -2px;
 }
 
 .hero-scroll{
-  position:absolute;
-  left:50%; bottom:26px;
-  z-index:2;
-  transform:translateX(-50%);
-  width:44px; height:44px;
+  margin-top:clamp(1em, 5cqi, 2em);
+  width:40px; height:40px;
   display:flex; align-items:center; justify-content:center;
-  color:var(--accent);
+  color:var(--sage);
   animation:scroll-bob 2.2s ease-in-out infinite;
 }
-.hero--photo .hero-scroll{ color:#fff; }
-.hero-scroll svg{ width:26px; height:26px; }
+.hero-scroll svg{ width:22px; height:22px; }
 @keyframes scroll-bob{
-  0%,100%{ transform:translate(-50%, 0); }
-  50%{ transform:translate(-50%, 8px); }
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(7px); }
 }
 
 /* ============================================================
@@ -1005,22 +928,24 @@ button{ font-family:inherit; }
    ============================================================ */
 
 .footer{
-  padding:clamp(56px, 10vw, 90px) 0 clamp(36px, 6vw, 56px);
+  padding:clamp(56px, 10vw, 90px) 0 0;
   text-align:center;
-  background:linear-gradient(180deg, transparent, var(--accent-15));
+  background:var(--bg);
 }
 
-.footer-heart{
-  width:22px;
-  height:22px;
-  margin-inline:auto;
-  display:block;
-  fill:var(--accent);
-  animation:heart-beat 1.8s ease-in-out infinite;
+/* Лебеди из видео замыкают страницу; фон картинки — та же бумага */
+.footer-swans{
+  width:min(100%, 560px);
+  height:auto;
+  margin:clamp(28px, 6vw, 48px) auto 0;
+  -webkit-mask-image:linear-gradient(180deg, transparent, #000 22%), linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(180deg, transparent, #000 22%), linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-composite:intersect;
 }
 
 .footer-message{
-  margin:.9em 0 0;
+  margin:0;
   font-style:italic;
   font-size:clamp(1.5rem, 4.6vw, 2.1rem);
   font-weight:400;
@@ -1104,16 +1029,16 @@ button{ font-family:inherit; }
     animation-iteration-count:1 !important;
     transition-duration:.01ms !important;
   }
-  .hero-bg img{ animation:none; }
   .petals{ display:none; }
 }
 
 :root{
-  --bg:#faf8f3;
-  --ink:#3d3830;
-  --accent:#b08d57;
-  --soft:#efe8dc;
-  --petal:#e9cfc5;
+  --bg:#f0eee9;
+  --ink:#45463c;
+  --accent:#a68f62;
+  --sage:#7f8a6c;
+  --soft:#e6e2d6;
+  --petal:#e8dfca;
 }
 
 /* ============================================================
@@ -1133,7 +1058,6 @@ button{ font-family:inherit; }
     linear-gradient(160deg, var(--soft), color-mix(in srgb, var(--soft) 70%, var(--accent)));
 }
 
-.hero--art .hero-floral path{ fill:none; }
 
 /* ============================================================
    RSVP

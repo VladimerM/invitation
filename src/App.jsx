@@ -46,7 +46,7 @@ export default function App() {
     <>
       {show('intro') && (
         <Intro
-          onOpen={() => { setOpened(true); if (hasMusic) play() }}
+          onOpen={() => { setOpened(true); hero.current?.startVideo(); if (hasMusic) play() }}
           onUnlock={() => {
             document.documentElement.classList.remove('intro-lock')
             ScrollTrigger.refresh()

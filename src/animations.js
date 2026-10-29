@@ -89,16 +89,16 @@ export function initScrollAnimations(scope) {
       })
     }
 
-    // Footer: heart beats, text rises
+    // Footer: text rises, then the swans drift up from below
     const footer = scope.querySelector('.footer')
     if (footer) {
       const tl = gsap.timeline({ scrollTrigger: once(footer, 'top 92%') })
-      const heart = footer.querySelector('.footer-heart')
-      tl.from(heart, { scale: 0, duration: 0.7, ease: 'back.out(3)' })
-      tl.to(heart, { scale: 1.12, duration: 0.55, yoyo: true, repeat: 3, ease: 'sine.inOut' }, '-=0.1')
       tl.from($$('.footer-message, .footer-bottom', footer), {
         y: 22, autoAlpha: 0, duration: 0.85, stagger: 0.1, ease: 'power3.out',
-      }, '-=1.2')
+      })
+      tl.from(footer.querySelector('.footer-swans'), {
+        y: 40, autoAlpha: 0, duration: 1.4, ease: 'power2.out',
+      }, '-=0.5')
     }
   }, scope)
 

@@ -3,33 +3,31 @@ import gsap from 'gsap'
 import { config } from '../config'
 import { reducedMotion } from '../utils'
 
-// Envelope with a wax seal. onOpen fires inside the click (so music may start),
-// onRevealHero fires as the envelope fades out.
+// Seconds before the end of the envelope video when the zoom-and-dissolve starts
+const LEAD_OUT = 1.1
+
+// Envelope video held on its first frame. A tap plays it; near the end the camera
+// pushes into the open envelope and the whole layer dissolves into the hero.
+// onOpen fires inside the tap (so music and the hero video may start),
+// onRevealHero fires while the envelope dissolves.
 export default function Intro({ onOpen, onRevealHero, onUnlock }) {
   const root = useRef(null)
+  const video = useRef(null)
   const opened = useRef(false)
-  const breath = useRef(null)
+  const finished = useRef(false)
 
   useEffect(() => {
     if (reducedMotion) return
     const ctx = gsap.context(() => {
-      gsap.from('.envelope', {
-        y: 44, autoAlpha: 0, duration: 1.1, ease: 'power3.out',
-        onComplete: () => {
-          breath.current = gsap.to('.envelope', {
-            y: 8, rotation: 0.5, duration: 2.6, yoyo: true, repeat: -1, ease: 'sine.inOut',
-          })
-        },
-      })
+      gsap.from('.intro-hint', { autoAlpha: 0, y: 14, duration: 1.2, delay: 0.5, ease: 'power3.out' })
+      gsap.from('.intro-ring', { autoAlpha: 0, duration: 1, delay: 0.9 })
     }, root)
     return () => ctx.revert()
   }, [])
 
-  const open = () => {
-    if (opened.current) return
-    opened.current = true
-    onOpen()
-
+  const finish = () => {
+    if (finished.current) return
+    finished.current = true
     const el = root.current
     if (reducedMotion) {
       el.style.display = 'none'
@@ -37,40 +35,53 @@ export default function Intro({ onOpen, onRevealHero, onUnlock }) {
       onRevealHero()
       return
     }
-    breath.current?.kill()
-
     const q = gsap.utils.selector(el)
-    gsap.timeline({ defaults: { ease: 'power2.inOut' } })
-      .to(q('.env-seal'), { scale: 1.22, duration: 0.16, ease: 'power2.out' })
-      .to(q('.env-seal'), { scale: 0, rotation: 140, y: -46, autoAlpha: 0, duration: 0.5, ease: 'back.in(1.6)' })
-      .to(q('.env-flap'), { rotateX: -180, duration: 0.65 }, '-=0.22')
-      .set(q('.env-flap'), { zIndex: 0 })
-      .to(q('.env-letter'), { yPercent: -74, duration: 0.85 }, '<15%')
-      .to(q('.intro-hint'), { autoAlpha: 0, duration: 0.4 }, '<')
-      .to(el, { autoAlpha: 0, duration: 0.7 }, '+=0.35')
+    gsap.timeline()
+      .to(q('.intro-stage'), { scale: 1.55, duration: 2, ease: 'power2.in' }, 0)
+      .to(el, { autoAlpha: 0, duration: 1.2, ease: 'power1.inOut' }, 0.75)
+      .add(onRevealHero, 1.15)
+      .add(onUnlock, 1.5)
       .set(el, { display: 'none' })
-      .add(onUnlock, '-=0.6')
-      .add(onRevealHero, '-=0.55')
+  }
+
+  const open = () => {
+    if (opened.current) return
+    opened.current = true
+    onOpen()
+    gsap.to(root.current.querySelectorAll('.intro-hint, .intro-ring'), { autoAlpha: 0, duration: 0.5 })
+
+    const v = video.current
+    if (!v || reducedMotion) return finish()
+    v.play().catch(finish)
+    // Safety net if the video stalls on a slow connection
+    setTimeout(finish, ((v.duration || 6) + 3) * 1000)
+  }
+
+  const onTime = () => {
+    const v = video.current
+    if (v.duration && v.currentTime >= v.duration - LEAD_OUT) finish()
   }
 
   return (
-    <div className="intro" ref={root} onClick={(e) => e.target === root.current && open()}>
-      <div className="envelope">
-        <div className="env-body">
-          <div className="env-letter" aria-hidden="true">
-            <span className="letter-monogram">{config.monogram}</span>
-            <span className="letter-names">{config.groom} &amp; {config.bride}</span>
-            <span className="letter-date">{config.dateLabel}</span>
-          </div>
-          <div className="env-pocket" aria-hidden="true" />
-          <div className="env-flap" aria-hidden="true" />
-          <button className="env-seal" type="button" aria-label="Открыть приглашение" onClick={open}>
-            <span className="seal-ring" aria-hidden="true" />
-            <span className="seal-monogram">{config.monogram}</span>
-          </button>
-        </div>
+    <div className="intro" ref={root}>
+      <img className="intro-backdrop" src={config.introPoster} alt="" aria-hidden="true" />
+      <div className="intro-stage">
+        <video
+          ref={video}
+          className="intro-video"
+          src={config.introVideo}
+          poster={config.introPoster}
+          muted
+          playsInline
+          preload="auto"
+          onTimeUpdate={onTime}
+          onEnded={finish}
+          onError={() => opened.current && finish()}
+        />
+        <span className="intro-ring" aria-hidden="true" />
       </div>
-      <p className="intro-hint">Нажмите на печать, чтобы открыть приглашение</p>
+      <button className="intro-tap" type="button" aria-label="Открыть приглашение" onClick={open} />
+      <p className="intro-hint" aria-hidden="true">{config.introHint}</p>
     </div>
   )
 }
