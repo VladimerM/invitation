@@ -23,7 +23,7 @@ export const config = {
     timeline: true,    // план дня
     locations: true,   // как добраться
     rsvp: true,        // анкета гостя
-    contact: true,     // контакты организатора
+    contact: false,     // контакты организатора
     footer: true,      // «С любовью, …» внизу
     petals: false,     // падающие лепестки (в видео уже есть бабочки)
   },
