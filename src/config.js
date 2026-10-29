@@ -74,7 +74,7 @@ export const config = {
     { time: '12:30', title: 'Выезд от невесты', text: 'Отправляемся на церемонию', icon: 'car' },
     { time: '13:30', title: 'Фотосессия в церкви', text: 'Фотосессия молодожёнов и гостей', icon: 'camera' },
     { time: '15:00', title: 'Венчание', text: 'Церемония венчания', icon: 'church' },
-    { time: '15:30', title: 'Выезд в банкетный зал', text: 'Отправляемся в ресторан', icon: 'car', map: 'https://share.google/yDzfpSD9ZAqNNyweb' },
+    { time: '15:30', title: 'Выезд в банкетный зал', text: 'Отправляемся в ресторан', icon: 'car', map: 'https://maps.app.goo.gl/KXQXbxNw5C6esFHJ9' },
     { time: '17:00', title: 'Сбор гостей', text: 'Встречаем гостей в ресторане', icon: 'glasses' },
   ],
 
@@ -84,7 +84,7 @@ export const config = {
       title: 'Церемония и банкет',
       address: 'Royal Events ',
       image: 'photos/venue.jpeg',
-      map: 'https://share.google/yDzfpSD9ZAqNNyweb',
+      map: 'https://maps.app.goo.gl/KXQXbxNw5C6esFHJ9',
     },
   ],
 
