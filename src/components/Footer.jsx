@@ -9,7 +9,7 @@ export default function Footer() {
           {config.groom} &amp; {config.bride} · {config.dateLabel}
         </p>
       </div>
-      <img className="footer-swans" src="photos/swans.jpg" width="576" height="250" alt="" aria-hidden="true" loading="lazy" />
+      <img className="footer-swans" src="photos/swans.jpg" width="720" height="360" alt="" aria-hidden="true" loading="lazy" />
     </footer>
   )
 }

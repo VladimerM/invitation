@@ -13,6 +13,7 @@ const LEAD_OUT = 1.1
 export default function Intro({ onOpen, onRevealHero, onUnlock }) {
   const root = useRef(null)
   const video = useRef(null)
+  const backdrop = useRef(null)
   const opened = useRef(false)
   const finished = useRef(false)
 
@@ -53,6 +54,7 @@ export default function Intro({ onOpen, onRevealHero, onUnlock }) {
     const v = video.current
     if (!v || reducedMotion) return finish()
     v.play().catch(finish)
+    if (backdrop.current?.offsetParent) backdrop.current.play().catch(() => {})
     // Safety net if the video stalls on a slow connection
     setTimeout(finish, ((v.duration || 6) + 3) * 1000)
   }
@@ -64,7 +66,17 @@ export default function Intro({ onOpen, onRevealHero, onUnlock }) {
 
   return (
     <div className="intro" ref={root}>
-      <img className="intro-backdrop" src={config.introPoster} alt="" aria-hidden="true" />
+      {/* Blurred copy fills the sides on wide screens and opens together with the envelope */}
+      <video
+        ref={backdrop}
+        className="intro-backdrop"
+        src={config.introVideo}
+        poster={config.introPoster}
+        muted
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      />
       <div className="intro-stage">
         <video
           ref={video}
