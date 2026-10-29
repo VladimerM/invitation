@@ -25,7 +25,7 @@ export const config = {
     rsvp: true,        // анкета гостя
     contact: true,     // контакты организатора
     footer: true,      // «С любовью, …» внизу
-    petals: false,     // падающие лепестки (в видео уже есть бабочки)
+    petals: true,     // падающие лепестки (в видео уже есть бабочки)
   },
 
   // Цвета темы: слоновая кость, шалфей и состаренное золото — в тон видео.
@@ -83,7 +83,7 @@ export const config = {
       time: '17:00',
       title: 'Церемония и банкет',
       address: 'Royal Events ',
-      image: 'photos/venue.jpg',
+      image: 'photos/venue.jpeg',
       map: 'https://share.google/yDzfpSD9ZAqNNyweb',
     },
   ],

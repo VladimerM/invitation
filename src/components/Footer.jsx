@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="container">
-        <p className="footer-message">С любовью, {config.groom} и {config.bride}</p>
+        <p className="footer-message">С любовью</p>
         <p className="footer-bottom">
           {config.groom} &amp; {config.bride} · {config.dateLabel}
         </p>
