@@ -4,7 +4,7 @@ import { config } from '../config'
 import { reducedMotion } from '../utils'
 
 // Seconds before the end of the envelope video when the zoom-and-dissolve starts
-const LEAD_OUT = 1.1
+const LEAD_OUT = 2
 
 // Envelope video held on its first frame. A tap plays it; near the end the camera
 // pushes into the open envelope and the whole layer dissolves into the hero.
